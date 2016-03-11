@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by stephen on 11/03/2016.
@@ -23,7 +21,7 @@ public class BlockParser {
 
     private final String START_FLAG = "<!--start-block";
     private final String END_FLAG = "<!--end-block";
-    private String pathTo;
+    private final String BLOCK_EXTENSION = ".blocks.html";
     private String pathFrom;
     private Logger logger = Logger.getLogger(BlockParser.class.getName());
 
@@ -31,23 +29,29 @@ public class BlockParser {
         return new BlockParser();
     }
 
+    /**
+     * Path that contains block
+     * @param pathFrom
+     * @return
+     */
     public BlockParser from(String pathFrom) {
         this.pathFrom = pathFrom;
         return this;
     }
 
-    public BlockParser to(String pathTo) {
-        this.pathTo = pathTo;
-        return this;
-    }
 
+    /**
+     * Parse Directory to extract block from blocks files
+     * @return
+     * @throws IOException
+     */
     public List<Block> parse() throws IOException {
         List<Block> blocks = new ArrayList<>();
         Pattern blockPattern = Pattern.compile(START_FLAG + ":" + "([^:]*):([^:]*)-->");
 
         String allBlocksString = Files.list(Paths.get(pathFrom))
                 .map(String::valueOf)
-                .filter(pathString -> pathString.contains(".blocks.html"))
+                .filter(pathString -> pathString.contains(BLOCK_EXTENSION))
                 .sorted()
                 .map(pathString -> Paths.get(pathString))
                 .map(path -> {

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class DemoApplication {
     public static void main(String [] args) {
         try {
-            BlockParser.read().from("C:\\DevTools\\Git\\t4html-html-template-builder\\t4html-demo-simple-case\\src\\main\\resources\\html\\blocks").to(".build").parse();
+            BlockParser.read().from("C:\\DevTools\\Git\\t4html-html-template-builder\\t4html-demo-simple-case\\src\\main\\resources\\html\\blocks").parse();
         } catch (IOException e) {
             e.printStackTrace();
         }
