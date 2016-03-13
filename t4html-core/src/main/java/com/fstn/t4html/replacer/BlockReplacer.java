@@ -1,7 +1,8 @@
-package com.fstn.t4html.parser;
+package com.fstn.t4html.replacer;
 
 import com.fstn.t4html.config.Config;
 import com.fstn.t4html.model.Block;
+import com.fstn.t4html.parser.BlockParser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -16,16 +17,28 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Created by stephen on 11/03/2016.
+ * Created by stephen on 13/03/2016.
+ * Class that replace original blocks with modules blocks
  */
-public class BlockParser {
-
-    private String pathFrom;
+public class BlockReplacer {
     private Logger logger = Logger.getLogger(BlockParser.class.getName());
+    private String pathFrom;
     private String extension;
 
-    public static BlockParser read() {
-        return new BlockParser();
+
+    public static BlockReplacer read() {
+        return new BlockReplacer();
+    }
+
+
+    /**
+     * Path that contains block
+     * @param extension
+     * @return
+     */
+    public BlockReplacer fileEndsWith(String extension) {
+        this.extension = extension;
+        return this;
     }
 
     /**
@@ -33,33 +46,22 @@ public class BlockParser {
      * @param pathFrom
      * @return
      */
-    public BlockParser from(String pathFrom) {
+    public BlockReplacer from(String pathFrom) {
         this.pathFrom = pathFrom;
         return this;
     }
 
-    /**
-     * Path that contains block
-     * @param extension
-     * @return
-     */
-    public BlockParser fileEndsWith(String extension) {
-        this.extension = extension;
-        return this;
-    }
-
-
 
     /**
-     * Parse Directory to extract block from blocks files
+     * Replace file content with block module
+     * @param modulesBlock
      * @return
-     * @throws IOException
      */
-    public List<Block> parse() throws IOException {
+    public BlockReplacer replace (List<Block> modulesBlock) throws IOException {
         List<Block> blocks = new ArrayList<>();
         Pattern blockPattern = Pattern.compile(Config.START_FLAG + ":" + "([^:]*):([^:]*)-->");
 
-        String allBlocksString = Files.list(Paths.get(pathFrom))
+        String fileContentResult = Files.list(Paths.get(pathFrom))
                 .map(String::valueOf)
                 .filter(pathString -> pathString.contains(extension))
                 .sorted()
@@ -74,16 +76,16 @@ public class BlockParser {
                 .flatMap(l -> l)
                 .collect(Collectors.joining(""));
 
-        Matcher m = blockPattern.matcher(allBlocksString);
-        logger.log(Level.INFO, "AllBlocks: " + allBlocksString);
+        Matcher m = blockPattern.matcher(fileContentResult);
+        logger.log(Level.INFO, "AllBlocks: " + fileContentResult);
         while (m.find()) {
             String verb = m.group(1).trim();
             String name = m.group(2).trim();
             String startTag = Config.START_FLAG + ":" + verb + ":" + name + "-->";
             String endTag = Config.END_FLAG + ":" + verb + ":" + name + "-->";
             logger.log(Level.INFO, "Looking for tags: " + startTag + " " + endTag);
-            if(allBlocksString != null) {
-                String[] contentAsArray = StringUtils.substringsBetween(allBlocksString, startTag, endTag);
+            if(fileContentResult != null) {
+                String[] contentAsArray = StringUtils.substringsBetween(fileContentResult, startTag, endTag);
                 if(contentAsArray != null && contentAsArray.length > 0) {
                     String content = contentAsArray[0];
                     Block block = new Block(name, verb, content);
@@ -93,6 +95,6 @@ public class BlockParser {
             }
         }
         logger.log(Level.INFO, "Blocks " + blocks);
-        return blocks;
+        return this;
     }
 }
