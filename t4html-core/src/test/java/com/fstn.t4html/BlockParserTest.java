@@ -6,6 +6,7 @@ import com.fstn.t4html.parser.BlockParser;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BlockParserTest {
         String expectedResult = "[Block{name='content', verb='replace', content='My html EU content'}, Block{name='content', verb='append', content='My html FR content    <!--start-block:append:contentInvoice-->    My Invoice content    <!--end-block:append:contentInvoice-->'}, Block{name='contentInvoice', verb='append', content='    My Invoice content    '}]";
 
         try {
-            List<Block> realResult = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("src\\test\\resources\\html\\blocks").parse();
+            List<Block> realResult = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("src"+File.pathSeparator+"test"+File.pathSeparator+"resources"+File.pathSeparator+"html"+File.pathSeparator+"blocks").parse();
             Assert.assertEquals("incorrect block parsing",expectedResult,realResult.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +38,7 @@ public class BlockParserTest {
         try {
             List<Block> realResult = BlockParser.read()
                     .fileEndsWith(".html")
-                    .from("src\\test\\resources\\html")
+                    .from("src"+File.pathSeparator+"test"+File.pathSeparator+"resources"+File.pathSeparator+"html")
                     .parse();
             Assert.assertEquals("incorrect block parsing",expectedResult,realResult.toString());
         } catch (IOException e) {
