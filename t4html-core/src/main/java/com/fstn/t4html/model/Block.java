@@ -1,5 +1,7 @@
 package com.fstn.t4html.model;
 
+import com.fstn.t4html.config.Config;
+
 /**
  * Created by stephen on 11/03/2016.
  */
@@ -38,6 +40,17 @@ public class Block {
         this.content = content;
     }
 
+    public String getStartTag(){
+       return Config.START_FLAG + ":" + verb + ":" + name + "-->";
+    }
+
+    public String getEndTag(){
+        return Config.END_FLAG + ":" + verb + ":" + name + "-->";
+    }
+
+    public String getContentWithTags(){
+        return getStartTag()+getContent()+getEndTag();
+    }
     @Override
     public String toString() {
         return "Block{" +

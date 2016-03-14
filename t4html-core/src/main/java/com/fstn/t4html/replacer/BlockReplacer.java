@@ -33,6 +33,7 @@ public class BlockReplacer {
 
     /**
      * Path that contains block
+     *
      * @param extension
      * @return
      */
@@ -43,6 +44,7 @@ public class BlockReplacer {
 
     /**
      * Path that contains block
+     *
      * @param pathFrom
      * @return
      */
@@ -54,10 +56,11 @@ public class BlockReplacer {
 
     /**
      * Replace file content with block module
+     *
      * @param modulesBlock
      * @return
      */
-    public BlockReplacer replace (List<Block> modulesBlock) throws IOException {
+    public String replace(List<Block> modulesBlock) throws IOException {
         List<Block> blocks = new ArrayList<>();
         Pattern blockPattern = Pattern.compile(Config.START_FLAG + ":" + "([^:]*):([^:]*)-->");
 
@@ -78,23 +81,32 @@ public class BlockReplacer {
 
         Matcher m = blockPattern.matcher(fileContentResult);
         logger.log(Level.INFO, "AllBlocks: " + fileContentResult);
+
+        StringBuffer fileContentResultBuffer = new StringBuffer(fileContentResult);
         while (m.find()) {
             String verb = m.group(1).trim();
             String name = m.group(2).trim();
             String startTag = Config.START_FLAG + ":" + verb + ":" + name + "-->";
             String endTag = Config.END_FLAG + ":" + verb + ":" + name + "-->";
             logger.log(Level.INFO, "Looking for tags: " + startTag + " " + endTag);
-            if(fileContentResult != null) {
-                String[] contentAsArray = StringUtils.substringsBetween(fileContentResult, startTag, endTag);
-                if(contentAsArray != null && contentAsArray.length > 0) {
-                    String content = contentAsArray[0];
-                    Block block = new Block(name, verb, content);
-                    logger.log(Level.INFO, "Find block " + block);
-                    blocks.add(block);
-                }
+            if (fileContentResult != null) {
+                modulesBlock.stream().filter(block -> block.getName().equals(name)).collect(Collectors.toList()).forEach(block -> {
+                    int startTagIndex = fileContentResultBuffer.indexOf(startTag);
+                    int endTagIndex = fileContentResultBuffer.indexOf(endTag);
+                    int contentStartIndex = startTagIndex + startTag.length();
+                    int contentEndIndex = endTagIndex - 1;
+                    switch (block.getVerb()) {
+                        case Config.APPEND_VERB:
+                            fileContentResultBuffer.replace(contentEndIndex, contentEndIndex, block.getContentWithTags());
+                            break;
+                        case Config.REPLACE_VERB:
+                            fileContentResultBuffer.replace(contentStartIndex, contentEndIndex, block.getContentWithTags());
+                            break;
+                    }
+                });
             }
         }
-        logger.log(Level.INFO, "Blocks " + blocks);
-        return this;
+        logger.log(Level.INFO, "Result " + fileContentResultBuffer.toString());
+        return fileContentResultBuffer.toString();
     }
 }
