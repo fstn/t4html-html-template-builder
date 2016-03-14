@@ -24,9 +24,9 @@ public class BlockReplacerTest {
 
         try {
 
-            List<Block> blocks = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("src"+File.pathSeparator+"test"+File.pathSeparator+"resources"+File.pathSeparator+"html"+File.pathSeparator+"blocks").parse();
+            List<Block> blocks = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("src"+File.separator+"test"+File.separator+"resources"+File.separator+"html"+File.separator+"blocks").parse();
             Assert.assertEquals("incorrect block parsing", expectedBlocksResult, blocks.toString());
-            String replaceResult = BlockReplacer.read().from("src"+File.pathSeparator+"test"+File.pathSeparator+"resources"+File.pathSeparator+"html").fileEndsWith(".html").replace(blocks);
+            String replaceResult = BlockReplacer.read().from("src"+File.separator+"test"+File.separator+"resources"+File.separator+"html").fileEndsWith(".html").replace(blocks);
             Assert.assertEquals("incorrect block replacing", expectedOriginalResult, replaceResult);
         } catch (IOException e) {
             e.printStackTrace();
