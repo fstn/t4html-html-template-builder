@@ -30,7 +30,7 @@ public class BlockReplacerTest {
             Assert.assertEquals("incorrect block replacing", expectedOriginalResult, replaceResult);
         } catch (IOException e) {
             e.printStackTrace();
-            Assert.fail(e.getMessage()+""+new File(".").getPath());
+            Assert.fail(e.getMessage()+":"+new File(".").getAbsolutePath());
         }
     }
 }
