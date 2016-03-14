@@ -7,6 +7,7 @@ import com.fstn.t4html.replacer.BlockReplacer;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class BlockReplacerTest {
             Assert.assertEquals("incorrect block replacing", expectedOriginalResult, replaceResult);
         } catch (IOException e) {
             e.printStackTrace();
-            Assert.fail(e.getMessage());
+            Assert.fail(e.getMessage()+""+new File(".").getPath();
         }
     }
 }
