@@ -3,14 +3,14 @@ package com.fstn.t4html.parser;
 import com.fstn.t4html.config.Config;
 import com.fstn.t4html.model.Block;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class BlockParser {
 
     private String pathFrom;
-    private Logger logger = Logger.getLogger(BlockParser.class.getName());
+    private Logger logger = LoggerFactory.getLogger(BlockParser.class.getName());
     private String extension;
 
     public static BlockParser read() {
@@ -61,7 +61,7 @@ public class BlockParser {
 
         String allBlocksString = Files.list(Paths.get(pathFrom))
                 .map(String::valueOf)
-                .filter(pathString -> pathString.contains(extension))
+                .filter(pathString -> pathString.endsWith(extension))
                 .sorted()
                 .map(pathString -> Paths.get(pathString))
                 .map(path -> {
@@ -72,27 +72,27 @@ public class BlockParser {
                     }
                 })
                 .flatMap(l -> l)
-                .collect(Collectors.joining(""));
+                .collect(Collectors.joining("\n"));
 
         Matcher m = blockPattern.matcher(allBlocksString);
-        logger.log(Level.INFO, "AllBlocks: " + allBlocksString);
+        logger.debug("Files Content: " + allBlocksString);
         while (m.find()) {
             String verb = m.group(1).trim();
             String name = m.group(2).trim();
             String startTag = Config.START_FLAG + ":" + verb + ":" + name + "-->";
             String endTag = Config.END_FLAG + ":" + verb + ":" + name + "-->";
-            logger.log(Level.INFO, "Looking for tags: " + startTag + " " + endTag);
+            logger.info("Looking for tags: " + startTag + " " + endTag);
             if(allBlocksString != null) {
                 String[] contentAsArray = StringUtils.substringsBetween(allBlocksString, startTag, endTag);
                 if(contentAsArray != null && contentAsArray.length > 0) {
                     String content = contentAsArray[0];
-                    Block block = new Block(name, verb, content);
-                    logger.log(Level.INFO, "Find block " + block);
+                    Block block = new Block( name, verb, content);
+                    logger.debug("Find block " + block);
                     blocks.add(block);
                 }
             }
         }
-        logger.log(Level.INFO, "Blocks " + blocks);
+        logger.debug("Blocks " + blocks);
         return blocks;
     }
 }

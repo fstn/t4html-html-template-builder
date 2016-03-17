@@ -1,0 +1,358 @@
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-4 it-height-10">
+            <div class="jumbotron it-imputation-img">
+                <canvas-viewer src="invoiceAttachment"
+                               options="options"></canvas-viewer>
+            </div>
+        </div>
+
+        <!--start-block:describe:invoice-id-->
+        <div class="col-md-8" ng-controller="ImputationController">
+            <div id="header-imputation" class="form-group it-imputation-h-invoice">
+                <div class="form-group">
+                    <div class="form-control-wrapper">
+                        <input it-input
+                               class="form-control  "
+                               type="text"
+                               name="ID"
+                               required=""
+                               readonly
+                               it-label="Invoice ID"
+                               ng-model="invoiceData.id"/>
+                    </div>
+                </div>
+            </div>
+            <!--end-block:describe:invoice-id-->
+
+
+            <div id="body-imputation">
+                <div id="invoiceHeader">
+                    <div class="it-view-header it-imputation-header">
+                        <h3>{{'IMPUTATION.SUBTITLE.HEADER' | translate}}</h3>
+                        <hr/>
+                    </div>
+                    <div class="it-imputation-jumbotron">
+                        <div class="row it-imputation-fieldset-top">
+                            <!--start-block:describe:header-number-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="number"
+                                               required=""
+                                               it-label="Number"
+                                               ng-model="invoiceData.header.number"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-number-->
+                            <!--start-block:describe:header-supplier-id-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="supplierId"
+                                               required=""
+                                               it-label="Supplier ID"
+                                               ng-model="invoiceData.header.supplierId"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-supplier-id-->
+                            <!--start-block:describe:header-supplier-site-id-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="supplierSiteId"
+                                               required=""
+                                               it-label="Supplier site ID"
+                                               ng-model="invoiceData.header.supplierSiteId"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--start-block:describe:header-supplier-site-id-->
+                            <!--start-block:describe:header-client-id-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="clientId"
+                                               required=""
+                                               it-label="Client ID"
+                                               ng-model="invoiceData.header.clientId"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-client-id-->
+                            <!--start-block:describe:header-total-amount-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="totalAmount"
+                                               required=""
+                                               it-label="Montant total"
+                                               ng-model="invoiceData.header.totalAmount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-total-amount-->
+                            <!--start-block:describe:header-scan-date-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="scanDate"
+                                               required=""
+                                               it-label="Date de scan"
+                                               autoclose="true"
+                                               data-placement="auto"
+
+                                               data-date-type="number"
+                                               data-date-format="dd-MM-yyyy"
+                                               bs-datepicker autofocus
+                                               ng-model="invoiceData.header.scanDate"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-scan-date-->
+                        </div>
+
+                        <div class="row it-imputation-fieldset-top">
+                            <!--start-block:describe:header-total-net-amount-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="totalNetAmount"
+                                               required=""
+                                               it-label="Montant total NET"
+                                               ng-model="invoiceData.header.totalNetAmount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-total-net-amount-->
+                            <!--start-block:describe:header-currency-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="currency"
+                                               required=""
+                                               it-label="Devise"
+                                               ng-model="invoiceData.header.currency"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:header-currency-->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="invoiceBody">
+                    <div class="it-view-header it-imputation-header">
+                        <h3>{{'IMPUTATION.SUBTITLE.BODY' | translate}}</h3>
+                        <hr/>
+                    </div>
+                    <div ng-repeat="bodyline in invoiceData.body">
+                        <div class="it-imputation-jumbotron">
+                            <div class="row">
+
+                                <!--start-block:describe:bodyline-product-reference-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="productReference"
+                                                   required=""
+                                                   it-label="Référence produit"
+                                                   ng-model="bodyline.productReference"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-product-reference-->
+                                <!--start-block:describe:bodyline-quantity-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="quantity"
+                                                   required=""
+                                                   it-label="Quantité"
+                                                   ng-model="bodyline.quantity"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-quantity-->
+                                <!--start-block:describe:bodyline-net-amount-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="netAmount"
+                                                   required=""
+                                                   it-label="Montant NET"
+                                                   ng-model="bodyline.netAmount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-net-amount-->
+                                <!--start-block:describe:bodyline-total-amount-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="totalAmount"
+                                                   required=""
+                                                   it-label="Montant total"
+                                                   ng-model="bodyline.totalAmount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-total-amount-->
+                                <!--start-block:describe:bodyline-vat-id-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="vatId"
+                                                   required=""
+                                                   it-label="Taxe ID"
+                                                   ng-model="bodyline.vatId"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-vat-id-->
+                                <!--start-block:describe:bodyline-vat-rate-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="form-control-wrapper">
+                                            <input it-input
+                                                   class="form-control  "
+                                                   type="text"
+                                                   name="vatRate"
+                                                   required=""
+                                                   it-label="Taxe %"
+                                                   ng-model="bodyline.vatRate"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end-block:describe:bodyline-vat-rate-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="footer-imputation">
+                <div class="it-view-header  it-imputation-header">
+                    <h3>{{'IMPUTATION.SUBTITLE.FOOTER' | translate}}</h3>
+                    <hr/>
+                </div>
+                <div ng-repeat="footerline in invoiceData.footer">
+                    <div class="it-imputation-jumbotron">
+                        <div class="row">
+                            <!--start-block:describe:footerline-vat-rate-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="vatRate"
+                                               required=""
+                                               it-label="Taxe %"
+                                               ng-model="footerline.vatRate"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:footerline-vat-rate-->
+                            <!--start-block:describe:footerline-total-net-amount-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="totalNetAmount"
+                                               required=""
+                                               it-label="Montant total NET"
+                                               ng-model="footerline.totalNetAmount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:footerline-total-net-amount-->
+                            <!--start-block:describe:footerline-total-amount-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-control-wrapper">
+                                        <input it-input
+                                               class="form-control  "
+                                               type="text"
+                                               name="totalAmount"
+                                               required=""
+                                               it-label="Montant total"
+                                               ng-model="footerline.totalAmount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-block:describe:footerline-total-amount-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="buttonBar" class="it-imputation-button-bar it-view-header">
+                <div class="row">
+                    <it-busy-indicator>
+                        <div class="row">
+                            <button class="btn btn-primary"
+                                    ng-click="completeTask()"
+                                    title="{{'IMPUTATION.BUTTON.VALIDATE' | translate}}">
+                                <span>
+                                  {{'IMPUTATION.BUTTON.VALIDATE' | translate}}
+                                </span>
+                            </button>
+                            <button class="btn btn-danger"
+                                    ng-click="cancel()"
+                                    title="{{'IMPUTATION.BUTTON.CANCEL' | translate}}">
+                                <span>
+                                  {{'IMPUTATION.BUTTON.CANCEL' | translate}}
+                                </span>
+                            </button>
+                        </div>
+                    </it-busy-indicator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

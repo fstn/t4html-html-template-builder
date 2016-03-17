@@ -6,12 +6,13 @@ import com.fstn.t4html.config.Config;
  * Created by stephen on 11/03/2016.
  */
 public class Block {
+
     private String name;
     private String verb;
     private String content;
 
-    public Block(String name, String position, String content) {
-        this.name = name;
+    public Block(String name,String position, String content) {
+        this.name =name;
         this.verb = position;
         this.content = content;
     }
@@ -48,13 +49,22 @@ public class Block {
         return Config.END_FLAG + ":" + verb + ":" + name + "-->";
     }
 
-    public String getContentWithTags(){
-        return getStartTag()+getContent()+getEndTag();
+    public String getDescribeStartTag(){
+        return Config.START_FLAG + ":" + Config.DESCRIBE_VERB + ":" + name + "-->";
     }
+
+    public String getDescribeEndTag(){
+        return Config.END_FLAG + ":" + Config.DESCRIBE_VERB + ":" + name + "-->";
+    }
+
+    public String getContentWithTags(){
+        return getDescribeStartTag()+getContent()+getDescribeEndTag();
+    }
+
     @Override
     public String toString() {
         return "Block{" +
-                "name='" + name + '\'' +
+                " name='" + name + '\'' +
                 ", verb='" + verb + '\'' +
                 ", content='" + content + '\'' +
                 '}';

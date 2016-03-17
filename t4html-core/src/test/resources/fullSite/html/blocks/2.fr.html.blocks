@@ -1,0 +1,34 @@
+<!--start-block:after:content-->
+My html FR content
+    <!--start-block:after:contentInvoice-->
+    My Invoice content
+    <!--end-block:after:contentInvoice-->
+<!--end-block:after:content-->
+
+
+<!--start-block:after:header-total-amount-->
+
+<script>
+    angular.module("app").controller('HomeCtrl',
+            ['$scope','$rootScope',function($scope,$rootScope) {
+                alert("toto");
+                $rootScope.invoiceData={header:{tvaFR:2}};
+        }]);
+
+    </script>
+    <div ng-controller="HomeCtrl">
+        <div class='form-group'>
+            <div class='form-control-wrapper'>
+            TVA
+                <input it-input
+                       class='form-control'
+                       type='text'
+                       name='tvaFR'
+                       required=''
+                       it-label='TVA FR'
+                       ng-model='$root.invoiceData.header.tvaFR'/>
+            </div>
+        </div>
+    </div>
+<!--end-block:after:header-total-amount-->
+

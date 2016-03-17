@@ -19,15 +19,41 @@ public class BlockReplacerTest {
     @Test
     public void simpleModuleCase() {
 
-        String expectedBlocksResult = "[Block{name='content', verb='replace', content='My html EU content'}, Block{name='content', verb='append', content='My html FR content    <!--start-block:append:contentInvoice-->    My Invoice content    <!--end-block:append:contentInvoice-->'}, Block{name='contentInvoice', verb='append', content='    My Invoice content    '}]";
-        String expectedOriginalResult = "<!DOCTYPE html><html lang=\"en\"><head>    <meta charset=\"UTF-8\">    <title>Title</title>    <div>    <!--start-block:describe:content--><!--start-block:replace:content-->My html EU content<!--end-block:replace:content--><!--start-block:append:content-->My html FR content    <!--start-block:append:contentInvoice-->    My Invoice content    <!--end-block:append:contentInvoice--><!--end-block:append:content--> <!--end-block:describe:content-->    </div></head><body></body></html>";
+        String expectedBlocksResult = "[Block{name='content', verb='replace', content='\n" +
+                "My html EU content\n" +
+                "'}, Block{name='content', verb='after', content='\n" +
+                "My html FR content\n" +
+                "    <!--start-block:after:contentInvoice-->\n" +
+                "    My Invoice content\n" +
+                "    <!--end-block:after:contentInvoice-->\n" +
+                "'}, Block{name='contentInvoice', verb='after', content='\n" +
+                "    My Invoice content\n" +
+                "    '}, Block{name='header-total-amount', verb='after', content='\n" +
+                "\n" +
+                "<div class='col-md-2'>\n" +
+                "    <div class='form-group'>\n" +
+                "        <div class='form-control-wrapper'>\n" +
+                "            <input it-input\n" +
+                "                   class='form-control floating-label'\n" +
+                "                   type='text'\n" +
+                "                   name='tvaFR'\n" +
+                "                   required=''\n" +
+                "                   it-label='TVA FR'\n" +
+                "                   ng-model='invoiceData.header.tvaFR'/>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</div>\n" +
+                "'}]";
+         try {
 
-        try {
-
-            List<Block> blocks = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("src"+File.separator+"test"+File.separator+"resources"+File.separator+"html"+File.separator+"blocks").parse();
-            Assert.assertEquals("incorrect block parsing", expectedBlocksResult, blocks.toString());
-            String replaceResult = BlockReplacer.read().from("src"+File.separator+"test"+File.separator+"resources"+File.separator+"html").fileEndsWith(".html").replace(blocks);
-            Assert.assertEquals("incorrect block replacing", expectedOriginalResult, replaceResult);
+            List<Block> blocks = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from("../t4html-quickstart-case"+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator+ "quickstart"+File.separator+"angular-common-quickstart"+File.separator+"fr").parse();
+            //Assert.assertEquals("incorrect block parsing", expectedBlocksResult, blocks.toString());
+            BlockReplacer
+                    .read()
+                    .to("target"+File.separator+"test"+File.separator+"resources"+File.separator+ "fullSite"+File.separator+"html")
+                    .from("../t4html-quickstart-case"+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator+ "quickstart"+File.separator+"angular-common-quickstart"+File.separator+"main" +File.separator)
+                    .fileEndsWith(".html")
+                    .replace(blocks);
         } catch (IOException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage()+":"+new File(".").getAbsolutePath());
