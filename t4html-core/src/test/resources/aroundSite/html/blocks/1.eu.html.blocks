@@ -1,0 +1,19 @@
+<!--start-block:around:footerline-total-net-amount-->
+<!--start-block:describe:header-tva-intracom-->
+<div class='col-md-2' ng-controller="netAmountController">
+    <div class='form-group'>
+        <div class='form-control-wrapper'>
+            TVA net amount
+            <input it-input
+                   class='form-control'
+                   type='text'
+                   name='tvaIntraCom'
+                   required=''
+                   it-label='TVA IntraCom'
+                   ng-model='invoice.data.custom.tva'/>
+        </div>
+        <!--insert-content-->
+    </div>
+</div>
+<!--end-block:describe:header-tva-intracom-->
+<!--end-block:around:footerline-total-net-amount-->

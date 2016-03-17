@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -59,40 +59,49 @@ public class BlockParser {
         List<Block> blocks = new ArrayList<>();
         Pattern blockPattern = Pattern.compile(Config.START_FLAG + ":" + "([^:]*):([^:]*)-->");
 
-        String allBlocksString = Files.list(Paths.get(pathFrom))
-                .map(String::valueOf)
-                .filter(pathString -> pathString.endsWith(extension))
-                .sorted()
-                .map(pathString -> Paths.get(pathString))
-                .map(path -> {
-                    try {
-                        return Files.lines(path);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .flatMap(l -> l)
-                .collect(Collectors.joining("\n"));
+        PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**/*" + extension + "");
+        logger.debug("Replace file with extension: " + extension);
 
+        final StringBuffer allBlocksString = new StringBuffer();
+        Files.walkFileTree(Paths.get(pathFrom), new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                        if (matcher.matches(path)) {
+                            logger.info(path.toString()+": Looking for blocks ");
+                            logger.debug("Files Content: " + allBlocksString);
+                            allBlocksString.append(Files.lines(path)
+                                    .collect(Collectors.joining("\n")));
+                        }else{
+                            logger.info(path.toString()+": Ignoring file ");
+                        }
+                        return  FileVisitResult.CONTINUE;
+                    }
+                });
         Matcher m = blockPattern.matcher(allBlocksString);
-        logger.debug("Files Content: " + allBlocksString);
         while (m.find()) {
+            int startIndex = m.start();
             String verb = m.group(1).trim();
             String name = m.group(2).trim();
             String startTag = Config.START_FLAG + ":" + verb + ":" + name + "-->";
             String endTag = Config.END_FLAG + ":" + verb + ":" + name + "-->";
             logger.info("Looking for tags: " + startTag + " " + endTag);
-            if(allBlocksString != null) {
-                String[] contentAsArray = StringUtils.substringsBetween(allBlocksString, startTag, endTag);
-                if(contentAsArray != null && contentAsArray.length > 0) {
-                    String content = contentAsArray[0];
-                    Block block = new Block( name, verb, content);
-                    logger.debug("Find block " + block);
-                    blocks.add(block);
+            if(!verb.equals(Config.DESCRIBE_VERB)) {
+                if (allBlocksString != null) {
+                    //remove String that are before current match in order to retreat another block already done
+                    String splitResult = allBlocksString.toString().substring(startIndex);
+                    String[] contentAsArray = StringUtils.substringsBetween(splitResult, startTag, endTag);
+                    if (contentAsArray != null && contentAsArray.length > 0) {
+                        String content = contentAsArray[0];
+                        Block block = new Block(name, verb, content);
+                        logger.debug("Find block " + block);
+                        if (!blocks.contains(block)) {
+                            blocks.add(block);
+                        }
+                    }
                 }
             }
         }
-        logger.debug("Blocks " + blocks);
+        logger.debug("Blocks Result: " + blocks);
         return blocks;
     }
 }

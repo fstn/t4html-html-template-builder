@@ -1,0 +1,18 @@
+<!--start-block:before:footerline-total-net-amount-->
+<!--start-block:describe:header-tva-fr-net-->
+<div class='col-md-2' ng-controller="netAmountController">
+    <div class='form-group'>
+        <div class='form-control-wrapper'>
+            TVA net amount
+            <input it-input
+                   class='form-control'
+                   type='text'
+                   name='tvaFR'
+                   required=''
+                   it-label='TVA FR'
+                   ng-model='invoice.data.custom.tva'/>
+        </div>
+    </div>
+</div>
+<!--end-block:describe:header-tva-fr-net-->
+<!--end-block:before:footerline-total-net-amount-->

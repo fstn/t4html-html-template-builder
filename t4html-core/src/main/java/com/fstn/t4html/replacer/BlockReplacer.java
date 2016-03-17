@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.ParseException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -114,27 +115,27 @@ public class BlockReplacer {
                                                     //insert inside parent just before end tag
                                                     case Config.APPEND_VERB:
                                                         logger.info(path.toString() + ": Add element " + block + " after tag: " + startTag);
-                                                        fileContentResultBuffer.replace(contentEndIndex, contentEndIndex, block.getContentWithTags());
+                                                        fileContentResultBuffer.insert(contentEndIndex, block.getContent());
                                                         break;
                                                     //insert inside parent just after start tag
                                                     case Config.PREPEND_VERB:
                                                         logger.info(path.toString() + ": Add element " + block + " before tag: " + startTag + " inside " + path.toString());
-                                                        fileContentResultBuffer.replace(contentStartIndex, contentStartIndex, block.getContentWithTags());
+                                                        fileContentResultBuffer.insert(contentStartIndex, block.getContent());
                                                         break;
                                                     //insert outside parent just after end block
                                                     case Config.AFTER_VERB:
                                                         logger.info(path.toString() + ": Add element " + block + " after tag: " + startTag);
-                                                        fileContentResultBuffer.replace(endOfEndTagIndex, endOfEndTagIndex, block.getContentWithTags());
+                                                        fileContentResultBuffer.insert(endOfEndTagIndex, block.getContent());
                                                         break;
                                                     //insert outside parent just before start tag
                                                     case Config.BEFORE_VERB:
                                                         logger.info(path.toString() + ": Add element " + block + " before tag: " + startTag + " inside " + path.toString());
-                                                        fileContentResultBuffer.replace(contentStartIndex, contentStartIndex, block.getContentWithTags());
+                                                        fileContentResultBuffer.insert(startTagIndex, block.getContent());
                                                         break;
                                                     //replace block parent content
                                                     case Config.REPLACE_VERB:
                                                         logger.info(path.toString() + ": Replace with element " + block + " inside tag: " + startTag + " inside " + path.toString());
-                                                        fileContentResultBuffer.replace(startTagIndex, endOfEndTagIndex, block.getContentWithTags());
+                                                        fileContentResultBuffer.replace(startTagIndex, endOfEndTagIndex, block.getContent());
                                                         break;
                                                     //insert around block
                                                     case Config.AROUND_VERB:
@@ -145,8 +146,13 @@ public class BlockReplacer {
                                                         //Replacing insert flag with original content
                                                         if (originalContentArray.length > 0) {
                                                             int insertContentStartIndex = fileContentResultBuffer.indexOf(Config.INSERT_FLAG);
+                                                            if (insertContentStartIndex < 0) {
+                                                                throw new RuntimeException("You need to append " + Config.INSERT_FLAG + " between " + startTag
+                                                                        + " and " + endTag + " " + " to work with " + verb+" tag");
+                                                            }
                                                             int insertContentEndIndex = insertContentStartIndex + Config.INSERT_FLAG.length();
                                                             fileContentResultBuffer.replace(insertContentStartIndex, insertContentEndIndex, originalContentArray[0]);
+
 
                                                         }
 
