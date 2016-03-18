@@ -3,7 +3,7 @@ package com.fstn.t4html.replaceSite;
 import com.fstn.t4html.config.Config;
 import com.fstn.t4html.model.Block;
 import com.fstn.t4html.parser.BlockParser;
-import com.fstn.t4html.replacer.BlockReplacer;
+import com.fstn.t4html.applier.TemplateApplier;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,17 +49,17 @@ public class ReplaceTest {
 
             List<Block> blocks = BlockParser.read().fileEndsWith(Config.BLOCK_EXTENSION).from(fromFolder).parse();
             //Assert.assertEquals("incorrect block parsing", expectedBlocksResult, blocks.toString());
-            BlockReplacer
+            TemplateApplier
                     .read()
                     .to(toFolder)
                     .from(fromFolder)
                     .fileEndsWith(".html")
-                    .replace(blocks);
+                    .apply(blocks);
 
             String finalViewContent = Files.lines(Paths.get(toFolder + File.separator + "html" + File.separator
                     + "app" + File.separator + "view.html")).collect(Collectors.joining("\n"));
 
-            Assert.assertEquals("replace with block",expectedBlocksResult, finalViewContent);
+            Assert.assertEquals("apply with block",expectedBlocksResult, finalViewContent);
         } catch (IOException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage() + ":" + new File(".").getAbsolutePath());

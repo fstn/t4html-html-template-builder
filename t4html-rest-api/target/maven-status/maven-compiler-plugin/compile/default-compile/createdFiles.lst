@@ -1,0 +1,4 @@
+com\fstn\t4html\Application.class
+com\fstn\t4html\service\BlocksService.class
+com\fstn\t4html\AccessControlAllowOriginFilter.class
+com\fstn\t4html\Application$JerseyConfig.class

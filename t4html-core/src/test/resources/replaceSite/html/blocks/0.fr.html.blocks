@@ -1,4 +1,4 @@
-<!--start-block:replace:footerline-total-net-amount-->
+<!--start-block:apply:footerline-total-net-amount-->
 <!--start-block:describe:header-tva-fr-net-->
 <div class='col-md-2' ng-controller="netAmountController">
     <div class='form-group'>
@@ -15,4 +15,4 @@
     </div>
 </div>
 <!--end-block:describe:header-tva-fr-net-->
-<!--end-block:replace:footerline-total-net-amount-->
+<!--end-block:apply:footerline-total-net-amount-->

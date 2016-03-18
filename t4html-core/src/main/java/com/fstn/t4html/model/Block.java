@@ -2,6 +2,8 @@ package com.fstn.t4html.model;
 
 import com.fstn.t4html.config.Config;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Created by stephen on 11/03/2016.
  */
@@ -49,14 +51,17 @@ public class Block {
         return Config.END_FLAG + ":" + verb + ":" + name + "-->";
     }
 
+    @XmlTransient
     public String getDescribeStartTag(){
         return Config.START_FLAG + ":" + Config.DESCRIBE_VERB + ":" + name + "-->";
     }
 
+    @XmlTransient
     public String getDescribeEndTag(){
         return Config.END_FLAG + ":" + Config.DESCRIBE_VERB + ":" + name + "-->";
     }
 
+    @XmlTransient
     public String getContentWithTags(){
         return getDescribeStartTag()+getContent()+getDescribeEndTag();
     }

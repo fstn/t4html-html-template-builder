@@ -1,9 +1,9 @@
 package com.fstn.t4html.replaceSite;
 
+import com.fstn.t4html.applier.TemplateApplier;
 import com.fstn.t4html.config.Config;
 import com.fstn.t4html.model.Block;
 import com.fstn.t4html.parser.BlockParser;
-import com.fstn.t4html.applier.TemplateApplier;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,15 +18,13 @@ import java.util.stream.Collectors;
 /**
  * Created by stephen on 17/03/2016.
  */
-public class AfterTest {
-    String fromFolder = "src"+File.separator+"test"+File.separator+"resources"+File.separator+ "afterSite";
-    String toFolder = "src"+File.separator+"test-result"+File.separator+"resources"+File.separator+ "afterSite";
+public class MixAfterBeforeTest {
+    String fromFolder = "src"+File.separator+"test"+File.separator+"resources"+File.separator+ "mixAfterBeforeSite";
+    String toFolder = "src"+File.separator+"test-result"+File.separator+"resources"+File.separator+ "mixAfterBeforeSite";
     @Test
     public void simpleModuleCase() {
 
-        String expectedBlocksResult = "<!--start-block:describe:footerline-total-net-amount-->\n" +
-                "Amount content\n" +
-                "<!--end-block:describe:footerline-total-net-amount-->\n" +
+        String expectedBlocksResult = "\n" +
                 "<!--start-block:describe:header-tva-intracom-->\n" +
                 "<div class='col-md-2' ng-controller=\"netAmountController\">\n" +
                 "    <div class='form-group'>\n" +
@@ -43,7 +41,9 @@ public class AfterTest {
                 "    </div>\n" +
                 "</div>\n" +
                 "<!--end-block:describe:header-tva-intracom-->\n" +
-                "\n" +
+                "<!--start-block:describe:footerline-total-net-amount-->\n" +
+                "Amount content\n" +
+                "<!--end-block:describe:footerline-total-net-amount-->\n" +
                 "<!--start-block:describe:header-tva-fr-net-->\n" +
                 "<div class='col-md-2' ng-controller=\"netAmountController\">\n" +
                 "    <div class='form-group'>\n" +
